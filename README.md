@@ -9,10 +9,10 @@ If you want to look how to do the partitions part (initial installation and firs
 
 
 ## Index
-[1. AppArmor](#1.-AppArmor)  
-[2. User](#2.-User)  
-[3. Sudo](#3.-Sudo)
-    [3.1 Sudo policies](#3.1-Sudo-policies)
+[1. AppArmor](#1-AppArmor)  
+[2. User](#2-User)  
+[3. Sudo](#3-Sudo)  
+    [3.1 Sudo policies](#31-Sudo-policies)
 
 ---
 
