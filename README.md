@@ -12,7 +12,7 @@ If you want to look how to do the partitions part (initial installation and firs
 [1. AppArmor](#1-AppArmor)  
 [2. User](#2-User)  
 [3. Sudo](#3-Sudo)  
-    [3.1 Sudo policies](#31-Sudo-policies)
+ - [3.1 Sudo policies](#31-Sudo-policies)
 
 ---
 
@@ -102,3 +102,4 @@ Defaults    secure_path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin
 ~~~
 ![image](https://github.com/ChristianFidalgoAreste/Born2beroot/assets/113194238/a47829c1-ad6d-4932-a292-a64f06a6fcf8)
 
+![image](https://github.com/ChristianFidalgoAreste/Born2beroot/assets/113194238/1106d53f-6d10-49bc-aae6-d4b75fb3c8df)
