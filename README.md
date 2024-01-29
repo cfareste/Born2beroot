@@ -5,7 +5,7 @@ If you want to look how to do the partitions part (initial installation and firs
 **⚠ Important ⚠:** If is not tell otherwise, every command should be running as **root** (sometimes it doesn't even work with `su`, it has to be root user!)
 
 ## Index
-[1. AppArmor]
+[1. AppArmor](#1.-AppArmor)
 ---
 
 
@@ -22,7 +22,7 @@ As the subject says it has to be activated on boot (remember that on Debian it i
     mkdir -p /etc/default/grub.d
 2. Add on a file `apparmor.cfg` a flag to activate apparmor on boot:
     echo 'GRUB_CMDLINE_LINUX_DEFAULT="$GRUB_CMDLINE_LINUX_DEFAULT apparmor=1 security=apparmor"' | sudo tee /etc/default/grub.d/apparmor.cfg
-3. Update GRUB Bootloader:
+4. Update GRUB Bootloader:
     update-grub
-4. Reboot:
+5. Reboot:
     reboot
