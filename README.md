@@ -18,11 +18,19 @@ If the output is a `Y`, its activated, otherwise is not.
 
 To activate or deactivate, we can type on the terminal `security=XXXX`, where `XXXX` is the name of the security module (AppArmor, SELinux...).
 As the subject says it has to be activated on boot (remember that on Debian it is already activated on boot), we can use the next commands:
-1. First, we create a directory for GRUB Bootloader on `/etc/default`:  
-    mkdir -p /etc/default/grub.d
-2. Add on a file `apparmor.cfg` a flag to activate apparmor on boot:  
-    echo 'GRUB_CMDLINE_LINUX_DEFAULT="$GRUB_CMDLINE_LINUX_DEFAULT apparmor=1 security=apparmor"' | sudo tee /etc/default/grub.d/apparmor.cfg
-4. Update GRUB Bootloader:  
+1. First, we create a directory for GRUB Bootloader on `/etc/default`:
+~~~
+mkdir -p /etc/default/grub.d
+~~~
+2. Add on a file `apparmor.cfg` a flag to activate apparmor on boot:
+~~~
+echo 'GRUB_CMDLINE_LINUX_DEFAULT="$GRUB_CMDLINE_LINUX_DEFAULT apparmor=1 security=apparmor"' | sudo tee /etc/default/grub.d/apparmor.cfg
+~~~
+3. Update GRUB Bootloader:
+~~~
     update-grub
-6. Reboot:  
+~~~
+4. Reboot:
+~~~
     reboot
+~~~
