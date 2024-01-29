@@ -24,5 +24,5 @@ As the subject says it has to be activated on boot (remember that on Debian it i
     echo 'GRUB_CMDLINE_LINUX_DEFAULT="$GRUB_CMDLINE_LINUX_DEFAULT apparmor=1 security=apparmor"' | sudo tee /etc/default/grub.d/apparmor.cfg
 4. Update GRUB Bootloader:
     update-grub
-5. Reboot:
+6. Reboot:
     reboot
