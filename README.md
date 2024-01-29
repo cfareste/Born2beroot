@@ -75,7 +75,7 @@ adduser cfidalgo sudo
 
 ### 3.1 Sudo policies
 You can modify the sudo policies (password retries, message, etc.) modifying the main `sudoers` file (sudo configuration file) with `sudo visudo`.  
-However, is more practical and better practice to create an own small configuration file on the `/etc/sudoers.d` directory, as it's more structured, well-organized, and directly imported in the main file.
+However, is more practical and better practice to create an own small configuration file on the `/etc/sudoers.d` directory, as it's more structured, well-organized, and directly imported in the main file.  
 🗒️ `visudo` is a text editor really similar to nano, but it checks for sudo configuration syntax, to prevent errors if the file is wrong configured.  
 
 To create an own sudo configuration file, type:
