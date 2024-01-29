@@ -2,12 +2,16 @@
 ### A project designed to install and configure a server without any GUI.
 
 If you want to look how to do the partitions part (initial installation and first bonus), or you want to know how to do the project on VMWare, please read the first part of [gemartin's guide](https://github.com/gemartin99/Born2beroot-Tutorial). My own guide differs in some ways with his, as I did this one investigating on my own, and I didn't document the initial installation and the partitions part. However, for the rest of the project you will find good explanations and learn properly how everything works, and more important, you will understand what are we using and why we are using it, and understand more concepts out of the subject to do a good defense of the project.  
+
 **⚠ Important ⚠:** If is not tell otherwise, every command should be running as **root** (sometimes it doesn't even work with `su`, it has to be root user!)  
+
 **🗒 Note 🗒:** If you see this emoji "⭕" it means that the information you are reading is worth knowing for the defense, as one question of the defense is based on that knowledge.
+
 
 ## Index
 [1. AppArmor](#1.-AppArmor)
 [2. User](#2.-User)
+
 
 ---
 
