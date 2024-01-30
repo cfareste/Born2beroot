@@ -17,6 +17,8 @@ If you want to look how to do the partitions part (initial installation and firs
 
 &ensp;&ensp;[3.1 Sudo policies](#31-Sudo-policies)  
 
+[4. Password policies](#4-Password-policies)
+
 ---
 
 
@@ -72,7 +74,7 @@ Install sudo with `apt install sudo` and reboot just in case (`reboot`).
 Repeat the steps of [point 2.](#2.-User) and add the user to the group `sudo`:
 ~~~
 adduser cfidalgo sudo
-⭕cat /etc/group | grep sudo
+⭕ cat /etc/group | grep sudo
 ~~~
 ![image](https://github.com/ChristianFidalgoAreste/Born2beroot/assets/113194238/6d29080a-a969-4378-b10f-8be352055791)
 
@@ -108,4 +110,72 @@ Defaults    secure_path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin
 ![image](https://github.com/ChristianFidalgoAreste/Born2beroot/assets/113194238/1106d53f-6d10-49bc-aae6-d4b75fb3c8df)
 
 
-## 4. Password
+## 4. Password policies
+To modify the configuration of the password policies we need to take two steps: First modify the `/etc/login.defs` file, and second of all install the `libpam-pwquality` package and modify it's configuration files.  
+
+**What is /etc/login.defs? 🔑:** Is a file that contains the configuration control definitions for the login package, that is to say, the password configuration of all users in the system.  
+**What is libpam-pwquality? 🔐:** Is a package that helps you configure hard policies for password in your system. It adds more policies and rules to make sure no user has weak passwords.
+
+1. Modify /etc/login.defs and modify the password aging controls:  
+   - Change the expiration day of the password: `PASS_MAX_DAYS 30`
+   - Minimum days before changing your new password: `PASS_MIN_DAYS 2`
+   - Warn the user 7 days before his password expires: `PASS_WARN_AGE 7`
+~~~
+PASS_MAX_DAYS 30
+PASS_MIN_DAYS 2
+PASS_WARN_AGE 7
+~~~
+
+2.1 Install `libpam-pwquality`:
+~~~
+apt install libpam-pwquality
+~~~
+
+2.2 Modify `/etc/security/pwquality.conf`:
+   - Number of chars that differs from old password: `difok = 7`
+   - Minimum length: `minlen = 10`
+   - Minimum one uppercase letter: `ucredit = -1`
+   - Minimum one digit: `dcredit = -1`
+   - Maximum number of repeated chars: `maxrepeat = 3`
+   - Force the root to follow this policies: `enforce_for_root`
+   - If a password is invalid, don't accept it (make sure is not just a warning): `enforcing = 1`
+~~~
+difok = 7
+minlen = 10
+ucredit = -1
+dcredit = -1
+maxrepeat = 3
+enforce_for_root
+enforcing = 1
+~~~
+
+![image](https://github.com/ChristianFidalgoAreste/Born2beroot/assets/113194238/11ed4012-7715-4e9b-bd98-2cf47763cdd6)
+![image](https://github.com/ChristianFidalgoAreste/Born2beroot/assets/113194238/827e1da1-54ec-4f76-a159-b407c206535f)
+![image](https://github.com/ChristianFidalgoAreste/Born2beroot/assets/113194238/5ee6277e-0801-4483-ac57-ec109caab442)
+![image](https://github.com/ChristianFidalgoAreste/Born2beroot/assets/113194238/4e436736-736c-466c-8405-995a9498e414)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
