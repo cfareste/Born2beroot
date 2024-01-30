@@ -1,4 +1,4 @@
-![image](https://github.com/ChristianFidalgoAreste/Born2beroot/assets/113194238/8c2b9d9f-f7a6-41a7-a39f-a28e88016917)# Born2beroot
+# Born2beroot
 ### A project designed to install and configure a server without any GUI.
 
 If you want to look how to do the partitions part (initial installation and first bonus), or you want to know how to do the project on VMWare, please read the first part of [gemartin's guide](https://github.com/gemartin99/Born2beroot-Tutorial). My own guide differs in some ways with his, as I did this one investigating on my own, and I didn't document the initial installation and the partitions part. However, for the rest of the project you will find good explanations and learn properly how everything works, and more important, you will understand what are we using and why we are using it, and understand more concepts out of the subject to do a good defense of the project.  
