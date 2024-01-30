@@ -19,6 +19,10 @@ If you want to look how to do the partitions part (initial installation and firs
 
 [4. Password policies](#4-Password-policies)
 
+[5. SSH Server](#5-SSH-Server)  
+
+[6. UFW Firewall](#6-UFW-Firwall)
+
 ---
 
 
@@ -155,7 +159,38 @@ enforcing = 1
 ![image](https://github.com/ChristianFidalgoAreste/Born2beroot/assets/113194238/4e436736-736c-466c-8405-995a9498e414)
 
 
+## 5. SSH Server
+To be able to connect to the server via SSH we need to install OpenSSH-server and modify the configuration files with small changes to change the port and prohibit the root connection.
 
+**What is SSH (Secure Shell)? 🐢:** Is a protocol to connect to a server in a secure channel. It works with private and public keys combination, where the server store the private key and the client has the public key. When a secure channel opens, the server compares both keys and if the "puzzle" resolves, it accepts the connection. All messages are encrypted with this combination, so is secure to send sensible data, as long as the public key is correct (otherwise the decryption won't work). Nonetheless, the public key can't be anywhere if you **dont't have another security middleware**, like user and password. If not, anybody with the public key (probably a lot of people) could join your server!  
+
+1. Install OpenSSH-server:
+~~~
+apt install openssh-server
+~~~
+
+2. Modify the `port` in `/etc/ssh/ssh_config` (client configuration):
+~~~
+Port 4242
+~~~
+
+3. Modify the `port` and deny root access in `/etc/ssh/sshd_config` (server configuration):
+~~~
+Port 4242
+PermitRootLogin no
+~~~
+
+4. Restart SSH service to apply changes:
+~~~
+sercice ssh restart
+~~~
+
+![image](https://github.com/ChristianFidalgoAreste/Born2beroot/assets/113194238/f16961c9-425f-47c1-bede-cd3802c8839a)
+![image](https://github.com/ChristianFidalgoAreste/Born2beroot/assets/113194238/db521238-c38f-4e81-87cf-232f43440427)
+![image](https://github.com/ChristianFidalgoAreste/Born2beroot/assets/113194238/3b5bf0c3-d234-4d64-9263-0afbc555c5e1)
+
+
+## 6. UFW Firewall
 
 
 
