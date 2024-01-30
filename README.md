@@ -75,7 +75,7 @@ cat /etc/group | grep user42
 
 ## 3. Sudo
 Install sudo with `apt install sudo` and reboot just in case (`reboot`).
-Repeat the steps of [point 2.](#2.-User) and add the user to the group `sudo`:
+Repeat the steps of [point 2.](#2-User) and add the user to the group `sudo`:
 ~~~
 adduser cfidalgo sudo
 ⭕ cat /etc/group | grep sudo
@@ -190,10 +190,32 @@ sercice ssh restart
 ![image](https://github.com/ChristianFidalgoAreste/Born2beroot/assets/113194238/3b5bf0c3-d234-4d64-9263-0afbc555c5e1)
 
 
-## 6. UFW Firewall
+## 6. UFW Firewall  
+**What is a Firewall? 🔥🧱:** Is a security system of the network of a computer or server. This software allows and denies explicit connections packages and ports, so the system can allow exact connections to other services (only SSH, only web, only web and SSH...), and deny the others. This way you make sure only the necessary connections and services are allowed to the system, and no other ports / connections are allowed, so no one can connect wherever they want.  
+UFW is a Firewall (Uncomplicated Firewall) with a really easy API and really easy to use and configure.
 
+1. Install UFW:
+~~~
+apt install ufw
+~~~
 
+2. Enable UFW:
+~~~
+ufw enable
+~~~
 
+3. Add a rule to allow port 4242:
+~~~
+ufw allow 4242
+~~~
+
+4. Verify that UFW is enabled and with the rule active (2 ways):
+~~~
+ufw status
+ufw status verbose
+~~~
+
+If the status is `status: active` and the rule is `4242 ALLOW Anywhere` it's correct.
 
 
 
