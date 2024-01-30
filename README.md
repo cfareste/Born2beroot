@@ -1,4 +1,4 @@
-# Born2beroot
+![image](https://github.com/ChristianFidalgoAreste/Born2beroot/assets/113194238/8c2b9d9f-f7a6-41a7-a39f-a28e88016917)# Born2beroot
 ### A project designed to install and configure a server without any GUI.
 
 If you want to look how to do the partitions part (initial installation and first bonus), or you want to know how to do the project on VMWare, please read the first part of [gemartin's guide](https://github.com/gemartin99/Born2beroot-Tutorial). My own guide differs in some ways with his, as I did this one investigating on my own, and I didn't document the initial installation and the partitions part. However, for the rest of the project you will find good explanations and learn properly how everything works, and more important, you will understand what are we using and why we are using it, and understand more concepts out of the subject to do a good defense of the project.  
@@ -21,7 +21,9 @@ If you want to look how to do the partitions part (initial installation and firs
 
 [5. SSH Server](#5-SSH-Server)  
 
-[6. UFW Firewall](#6-UFW-Firwall)
+[6. UFW Firewall](#6-UFW-Firewall)
+
+[7. Bonus](#7-Bonus)
 
 ---
 
@@ -217,20 +219,141 @@ ufw status verbose
 
 If the status is `status: active` and the rule is `4242 ALLOW Anywhere` it's correct.
 
+![image](https://github.com/ChristianFidalgoAreste/Born2beroot/assets/113194238/ffc1006a-50b7-4272-9701-fd3920531c32)
 
 
 
+## 7. Script
+For the script, we will separate it in 2 ways. First, we will create the script, explaining every command used and how it works. It's important that you understand every command used, as it's asked on the defense. Then, we will configure **Crontab**, a **cron** configuration file, a tool that allows us to program repetitive tasks along the server in background.
 
+1. Script:
+First, create a `monitoring.sh` script with nano in the `/root` directory (it can be elsewhere, but this directory is exclusive for root, so you prevent not-allowed modifications):
+~~~
+nano /root/monitoring.sh
+~~~
 
+2. Add the content of the script, creating variables for every command and showing it's value in the `wall` command (A command to show in every terminal of the server the same formatted message):
+ - **Arch**: With the command `uname -a` we can see all the information of the architecture. The parameter `-a` lists ALL the information, while other parameters like `-v` just lists the version (Debian).
+ ![image](https://github.com/ChristianFidalgoAreste/Born2beroot/assets/113194238/b97330e8-1e06-44d5-9e32-06d7d44ee35a)
 
+ - **CPU Physical**: The `/proc/cpuinfo` file contains information about the CPU. The `physical id` refers to the id of every physical CPU in the system, starting by 0. That means that we can count how many times it appears to know how many physicals CPU there are. We use `grep "physical id" | wc -l` for that.
+ ![image](https://github.com/ChristianFidalgoAreste/Born2beroot/assets/113194238/a061cc15-8629-48b2-b5f1-fa6f138eadd4)
 
+ - **Virtual CPU**: The same as before, but this time counting the `processor` line. We count how many times the line `processor` appears.
+ ![image](https://github.com/ChristianFidalgoAreste/Born2beroot/assets/113194238/677fa1e1-cfe9-471b-b75f-475844faee92)
 
+ - **Memory usage**: The command `free` lists information about the memory. With the parameter `--mega` (not -m) we can list this information in MB (-m is for Mebibytes, not Mega). As the information appears by columns, we need to use the command `awk` to filter this info. With the `FNR` we can access to the nth row (index of the row), and with the `{print $x}` we can print the `$x` column (index of column). The `$3` col is the memory used, the `$2` col is the total memory, and to print the percentage, we use `printf()` to print formatted (`%.2f` stands for 2 decimals) text, and we calculate it with **memUsed * 100 / memTotal**.
+![image](https://github.com/ChristianFidalgoAreste/Born2beroot/assets/113194238/e5edc8e7-736f-4977-a91a-2bdf89beb9ab)
 
+ - **Disk usage**: The comand `df` sum up information about the disk (disk filesystem), and we use the flag `-m` to list it in MB. We filter the info only to `/dev/` and exclude (with the flag **-v**) the `/boot`. Then, for every item in the `$x` column (`$3` for usage and `$2` for total), you add the value to a variable and then print the result with `awk` (and for the percentage we use the same formula as in "Memory usage"):
+![image](https://github.com/ChristianFidalgoAreste/Born2beroot/assets/113194238/3bf24c0c-b4cb-4f6e-8719-2478978fface)
 
+ - **CPU Load**: With the command `vmstat`, we can see different system statistics, like CPU activity, memory used, etc. Then, with `tail -1` we can get only the last output. Finally, we print the 15th column, that contains the information of usage of CPU. We need to substract this result to 100 to get the actual use of CPU, and format it to 1 decimal with `printf` and `expr`:
+![image](https://github.com/ChristianFidalgoAreste/Born2beroot/assets/113194238/d26116bf-1032-4b1f-a2ee-932b2022d90f)
 
+ - **Last boot**: With `who -b` we can see the information of the last boot. To parse the information, we extract from the frist row (`FNR`) the 3rd and 4rth column, separate with space (`$3 " " $4`):
+![image](https://github.com/ChristianFidalgoAreste/Born2beroot/assets/113194238/21c066c9-ce9a-4d01-a408-2079031dc4e8)
 
+ - **LVM Use**: We extract how many lines are with "lvm" on the output of `lsblk`, that lists information about the volumes and partitions. Using and `if` statement, we look if the number of lines is greater than 0. If it is, we `echo` "yes", otherwise we `echo` "no":
+![image](https://github.com/ChristianFidalgoAreste/Born2beroot/assets/113194238/211c2605-4ee0-4fed-9074-de8b64bfc545)
 
+ - **TCP Connections**: With the command `ss` we can list information about the network and connections (as using `netstat`). With the flag `-ta`, we can filter for TCP only. Then, we `grep` the established only ("ESTAB"), and we count the lines.
+![image](https://github.com/ChristianFidalgoAreste/Born2beroot/assets/113194238/11fe0ebf-b262-4d96-802a-d54e0651c64e)
 
+ - **User log**: The `users` command lists all the connected users. Using `wc -w` we can count the words of the output. This way we are counting the different users.
+![image](https://github.com/ChristianFidalgoAreste/Born2beroot/assets/113194238/3fe763f8-a2fb-4182-a86f-1cdc812b14be)
+
+ - **Network**: To get the IP, we can simply use `hostname -I`. To get the MAC address, we can use `ip link`, to show the network interfaces. We `grep` the "link/ether" and print the second column with `awk`:
+![image](https://github.com/ChristianFidalgoAreste/Born2beroot/assets/113194238/6619e8fc-54ce-41d7-9afa-1199bc55b02b)
+
+ - **Sudo**: To get the number of sudo commands executions we can use `journalctl`, a tool that lists all the system's registers. With `_COMM=sudo` we filter with executable scripts that match with sudo. Then, we `grep` "COMMAND" to filter the command one's, and finally we count how many lines there are with `wc -l`:
+![image](https://github.com/ChristianFidalgoAreste/Born2beroot/assets/113194238/b6b1a390-3701-49cd-ae57-15aa453d72d9)
+
+Script:
+~~~
+#!/bin/bash
+
+#Arch
+architecture=$(uname -a)
+
+#CPU Physical
+cpuPhys=$(grep "physical id" /proc/cpuinfo | wc -l)
+
+#vCPU
+vCPU=$(grep "processor" /proc/cpuinfo | wc -l)
+
+#Memory usage
+memUsed=$(free --mega | awk 'FNR == 2 {print $3}')
+memTotal=$(free --mega | awk 'FNR == 2 {print $2}')
+memPerc=$(free --mega | awk 'FNR == 2 {printf("%.2f"), $3*100/$2}')
+
+#Disk Usage
+diskUsed=$(df -m | grep "/dev/" | grep -v "/boot" | awk '{disk_us += $3} END {print disk_us}')
+diskTotal=$(df -m | grep "/dev/" | grep -v "/boot" | awk '{disk_tot += $2} END {printf("%.1fGb"), disk_tot/1024}')
+diskPerc=$(df -m | grep "/dev/" | grep -v "/boot" | awk '{disk_us += $3} {disk_tot += $2} END {printf("%d"), disk_us*100/disk_tot}')
+
+#CPU load
+cpuLoad=$(vmstat 1 2 | tail -1 | awk '{print $15}')
+cpuParsed=$(printf "%.1f" $(expr 100 - $cpuLoad))
+
+#Last boot
+lastBoot=$(who -b | awk 'FNR == 1 {print $3 " " $4}')
+
+#LVM use
+lvmUse=$(if [ $(lsblk | grep "lvm" | wc -l) -gt 0 ]; then echo yes; else echo no; fi)
+
+#TCP Connections
+tcpConn=$(ss -ta | grep "ESTAB" | wc -l)
+
+#User log
+userLog=$(users | wc -w)
+
+#Network
+ip=$(hostname -I)
+mac=$(ip a | grep "link/ether" | awk '{print $2}')
+
+#Sudo
+sudo=$(journalctl _COMM=sudo | grep COMMAND | wc -l)
+
+wall " Architecture: $architecture
+CPU Physical: $cpuPhys
+vCPU: $vCPU
+Memory Usage: $memUsed/${memTotal}MB ($memPerc%)
+Disk Usage: $diskUsed/${diskTotal} ($diskPerc%)
+CPU Load: $cpuParsed%
+Last boot: $lastBoot
+LVM use: $lvmUse
+TCP Connections: $tcpConn Established
+User log: $userLog
+Network: IP $ip ($mac)
+Sudo: $sudo cmd"
+~~~
+
+3. Create the temporized task with crontab. Edit the crontab file with the next command:
+~~~
+crontab -e -u root 
+~~~
+
+And add the next line (maybe you need to change the script path):
+~~~
+*/10 * * * * sh /root/monitoring.sh
+~~~
+
+This line follows a specific syntax:
+ - Minutes (0 - 59): The task repeats every 'X' minute. `*` represents no specific minute, and `*/X` represents every X minutes.
+ - Hour (0 - 23): The task repeats every 'X' hour. `*` represents no specific hour, and `*/X` represents every X hours.
+ - Day of the month (1 - 31): The task repeats every 'X' day. `*` represents no specific day, and `*/X` represents every X days.
+ - Month of the year (1 - 12): The task repeats every 'X' month. `*` represents no specific month, and `*/X` represents every X months.
+ - Day of the week (0 - 7): The task repeats every 'X' day of the week (monday, tuesday...).
+
+4. Finally, we give permissions to the script so crontab can execute it (change the path of the script to your needs):
+~~~
+chmod ugo+x /root/monitoring.sh
+~~~
+
+![image](https://github.com/ChristianFidalgoAreste/Born2beroot/assets/113194238/e33cfeec-31c0-479a-9ed7-5536b9c95d4f)
+
+## 7. Bonus
 
 
 
