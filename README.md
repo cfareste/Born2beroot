@@ -232,7 +232,6 @@ If the status is `status: active` and the rule is `4242 ALLOW Anywhere` it's cor
 ![image](https://github.com/ChristianFidalgoAreste/Born2beroot/assets/113194238/ffc1006a-50b7-4272-9701-fd3920531c32)
 
 
-
 ## 7. Script
 For the script, we will separate it in 2 ways. First, we will create the script, explaining every command used and how it works. It's important that you understand every command used, as it's asked on the defense. Then, we will configure **Crontab**, a **cron** configuration file, a tool that allows us to program repetitive tasks along the server in background.
 
@@ -363,9 +362,155 @@ chmod ugo+x /root/monitoring.sh
 
 ![image](https://github.com/ChristianFidalgoAreste/Born2beroot/assets/113194238/e33cfeec-31c0-479a-9ed7-5536b9c95d4f)
 
+
 ## 8. Bonus
+As I said, if you want to do the bonus of the partitions and the disk part, check the [gemartin's guide](https://github.com/gemartin99/Born2beroot-Tutorial).  
 
+**What is Lighttpd? ⚡:** Is a web server designed to be fast, secure and flexible. Is also designed to work on environments where speed is key. It consumes less CPU and RAM. You can configure it to work aside with PHP and Wordpress, so Wordpress will work faster and less resource-consuming.
 
+1. Install lighttpd:
+~~~
+apt install lighttpd
+~~~
 
+2. Allow connections on port 80 with ufw:
+~~~
+ufw allow 80
+~~~
 
+Now that lighttpd is installed, we need to install `Wordpress`:
 
+3. Install `wget` (command to get easily web resources in terminal, similar to `apt`, but easily managing the versions):
+~~~
+apt install wget
+~~~
+
+4. Move to `/var/www` with `cd` (the default root for web server in Linux systems):
+~~~
+cd /var/www
+~~~
+
+5. Before installing wordpress, we need to move the lighttpd default folder for html (placeholder page) to another location:
+~~~
+mv ./html ./root/html_old_lighttpd
+~~~
+The path can be changed, it can be inside the same folder `/var/www`.
+
+6. **From /var/www**, download the latest version of Wordpress with `wget`, decompress it with `tar` and erase the `.tar.gz`:
+~~~
+wget https://wordpress.org/latest.tar.gz
+tar -xzvf latest.tar.gz
+rm latest.tar.gz
+~~~
+
+7. Rename the remaining folder (so Linux knows that there is a web server):
+~~~
+mv wordpress/ html/
+~~~
+
+8. Give permissions to the folder so it can be executable by others:
+~~~
+chmod -R 755 html/
+~~~
+
+After installing Wordpress, we need to install `MariaDB`, a database really similar to `MySQL`:
+
+9. Install `mariadb-server`:
+~~~
+apt install mariadb-server
+~~~
+
+10. As the default installation is pretty insecure, we need to execute `mysql_secure_installation`:
+~~~
+mysql_secure_installation
+~~~
+Then, configure it with the next parameters:
+~~~
+Change to unix_sockets: N
+Change the root password: N
+Remove anonymous users: Y
+Disallow remote root login: Y
+Remove test database and access to it: Y
+Reload tables privileges: Y
+~~~
+
+11. Initialize mariadb with `mariadb`:
+~~~
+mariadb
+~~~
+Create the database (1) and a user (2), granting all the privileges to it (3) and reload the privileges (4):
+~~~
+CREATE DATABASE wordpressDB;
+CREATE USER 'cfidalgo'@'localhost' IDENTIFIED BY 'B2br_normal';
+GRANT ALL PRIVILEGES ON wordpressDB.* TO 'cfidalgo'@'localhost';
+FLUSH PRIVILEGES;
+~~~
+Note that you can change the name of database and user to whichever you want. After, exit `mariadb`:
+~~~
+exit
+~~~
+
+12. Install PHP (`php-cgi` and `php-mysql`):
+~~~
+apt install php-cgi
+apt install php-mysql
+~~~
+
+13. Modify Wordpress configuration files (on /var/www/html), moving `wp-config-sample.php` to `wp-config.php` and modifying the `DB_Name`, `DB_User` and `DB_PASSWORD`
+~~~
+cd /var/www/html
+mv wp-config-sample.php wp-config.php
+nano wp-config.php
+~~~
+![image](https://github.com/ChristianFidalgoAreste/Born2beroot/assets/113194238/4834b406-9631-4ee7-94e9-a9f08028755b)
+
+14. Lastly, enable fast php for lighttpd to manage fast php and wordpress:
+~~~
+lighty-enable-mod fastcgi
+lighty-enable-mod fastcgi-php
+service lighttpd force-reload
+~~~ 
+
+After this, you are finished with the Wordpress bonus. Now, enter `localhost` on your browser (or the IP of your VM) and configure Wordpress with your values. When you are done, login to wp-admin.  
+If you enter `localhost` in your browser, you will see your Wordpress page. If you enter `localhost/wp-admin`, you will get to Wordpress admin panel.
+
+![image](https://github.com/ChristianFidalgoAreste/Born2beroot/assets/113194238/a469cc26-bce8-420b-b9bd-36f4dfba63aa)
+![image](https://github.com/ChristianFidalgoAreste/Born2beroot/assets/113194238/a8ba42e9-fdd8-44a8-a18f-c092ce03a884)
+![image](https://github.com/ChristianFidalgoAreste/Born2beroot/assets/113194238/5701fd27-3886-448d-ac6a-e00b89ea7906)
+
+The last bonus is installing and extra **useful** service. In my case, I installed was Litespeed.
+
+**What is Litespeed? 🚄:** Is a high-perfomance web server that helps to make an eficient management of the resources. Is a good option to manage a big volume of resources / trafic and demanding web pages. It can act as a balance loader (limit de resources used by a user so other users don't see themselves affected by it), so it make sense to install it with Wordpress to improve speed, low the consume of resources, and get a balance loader.
+
+1. Create the repository of LiteSpeed:
+~~~
+wget -O - https://repo.litespeed.sh | bash
+~~~
+
+2. Download OpenLiteSpeed from the Debian repository:
+~~~
+wget -O - http://rpms.litespeedtech.com/debian/enable_lst_debian_repo.sh | bash
+~~~
+
+3. Install OpenLiteSpeed:
+~~~
+apt install openlitespeed
+~~~
+
+4. Change the user and password:
+~~~
+/usr/local/lsws/admin/misc/admpass.sh
+~~~
+
+5. Open the ports with `ufw`:
+~~~
+ufw allow 8088
+ufw allow 7080
+ufw reload
+~~~
+
+Now, enter on `localhost:8088` for the LiteSpeed page and `localhost:7080` for LiteSpeed admin panel.
+
+![image](https://github.com/ChristianFidalgoAreste/Born2beroot/assets/113194238/8be4de85-1587-454a-a2e3-8ff50cb7e229)
+![image](https://github.com/ChristianFidalgoAreste/Born2beroot/assets/113194238/8c2fbe49-daef-484a-bd30-8aee5eb4ba40)
+![image](https://github.com/ChristianFidalgoAreste/Born2beroot/assets/113194238/3f998ba9-0db7-468c-b02c-670278d4f435)
