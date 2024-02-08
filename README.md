@@ -23,7 +23,9 @@ If you want to look how to do the partitions part (initial installation and firs
 
 [6. UFW Firewall](#6-UFW-Firewall)
 
-[7. Bonus](#7-Bonus)
+[7. Script](#7-Script)
+
+[8. Bonus](#8-Bonus)
 
 ---
 
@@ -115,7 +117,6 @@ Defaults    secure_path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin
 
 ![image](https://github.com/ChristianFidalgoAreste/Born2beroot/assets/113194238/1106d53f-6d10-49bc-aae6-d4b75fb3c8df)
 
-
 ## 4. Password policies
 To modify the configuration of the password policies we need to take two steps: First modify the `/etc/login.defs` file, and second of all install the `libpam-pwquality` package and modify it's configuration files.  
 
@@ -159,12 +160,21 @@ enforcing = 1
 ![image](https://github.com/ChristianFidalgoAreste/Born2beroot/assets/113194238/827e1da1-54ec-4f76-a159-b407c206535f)
 ![image](https://github.com/ChristianFidalgoAreste/Born2beroot/assets/113194238/5ee6277e-0801-4483-ac57-ec109caab442)
 ![image](https://github.com/ChristianFidalgoAreste/Born2beroot/assets/113194238/4e436736-736c-466c-8405-995a9498e414)
+  
+**⚠️ Warning ⚠️:** The users that were created before the installation of the password policies are **NOT** following all the policies (they are not following the `PASS_MAX_DAYS`, `PASS_MIN_DAYS` and `PASS_WARN_AGE`), including the *root* user. To make sure all the previously existing users are following these policies, you can check it with `chage -l user`.
+
+![image](https://github.com/ChristianFidalgoAreste/Born2beroot/assets/113194238/a4b3c4bf-b587-4dd6-bbfe-4e908d194e1d)
+
+The image shows that the *root* user is not following the current policies. You can change it with the command `chage -m 2 -M 30 user`, where the flag `-m` is the minimum days policy and the `-M` the maximum days policy.ç
+
+![image](https://github.com/ChristianFidalgoAreste/Born2beroot/assets/113194238/fffc74e0-b1cd-4bc1-8976-7684c2a6655a)
+![image](https://github.com/ChristianFidalgoAreste/Born2beroot/assets/113194238/79567802-2db7-4678-9065-404bd46f6bb0)
 
 
 ## 5. SSH Server
 To be able to connect to the server via SSH we need to install OpenSSH-server and modify the configuration files with small changes to change the port and prohibit the root connection.
 
-**What is SSH (Secure Shell)? 🐢:** Is a protocol to connect to a server in a secure channel. It works with private and public keys combination, where the server store the private key and the client has the public key. When a secure channel opens, the server compares both keys and if the "puzzle" resolves, it accepts the connection. All messages are encrypted with this combination, so is secure to send sensible data, as long as the public key is correct (otherwise the decryption won't work). Nonetheless, the public key can't be anywhere if you **dont't have another security middleware**, like user and password. If not, anybody with the public key (probably a lot of people) could join your server!  
+**What is SSH (Secure Shell)? 🐢:** Is a protocol to connect to a server in a secure channel. It works with private and public keys combination, where the server store the private key and the client has the public key. When a secure channel opens, the server compares both keys and if the "puzzle" resolves, it accepts the connection. All messages are encrypted with this combination, so is secure to send sensible data, as long as the public key is correct (otherwise the decryption won't work). Nonetheless, the public key can't be anywhere if you **don't have another security middleware**, like user and password. If not, anybody with the public key (probably a lot of people) could join your server!  
 
 1. Install OpenSSH-server:
 ~~~
@@ -353,7 +363,7 @@ chmod ugo+x /root/monitoring.sh
 
 ![image](https://github.com/ChristianFidalgoAreste/Born2beroot/assets/113194238/e33cfeec-31c0-479a-9ed7-5536b9c95d4f)
 
-## 7. Bonus
+## 8. Bonus
 
 
 
