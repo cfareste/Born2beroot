@@ -27,6 +27,8 @@ If you want to look how to do the partitions part (initial installation and firs
 
 [8. Bonus](#8-Bonus)
 
+[9. Prepare your defense](#9-Prepare-your-defense)
+
 ---
 
 
@@ -514,3 +516,25 @@ Now, enter on `localhost:8088` for the LiteSpeed page and `localhost:7080` for L
 ![image](https://github.com/ChristianFidalgoAreste/Born2beroot/assets/113194238/8be4de85-1587-454a-a2e3-8ff50cb7e229)
 ![image](https://github.com/ChristianFidalgoAreste/Born2beroot/assets/113194238/8c2fbe49-daef-484a-bd30-8aee5eb4ba40)
 ![image](https://github.com/ChristianFidalgoAreste/Born2beroot/assets/113194238/3f998ba9-0db7-468c-b02c-670278d4f435)
+
+
+## 9. Prepare your defense
+![image](https://github.com/ChristianFidalgoAreste/Born2beroot/assets/113194238/d6a548d8-c484-43ff-a441-37a472120ae4)
+
+To get the signature, go to the directory where you have your VM saved (probably /sgoinfre/Perso/your-login) and use `shasum Virtual Disk.vmware` (the extension and name of the disk may variate if you use VMWare or Virtual box. Just be sure is the simpliest name, as Virtual Disk, and not Virtual Disk-002.vmware. The extension can be .vmware or .vdi). 
+
+#### ⚠️ IMPORTANT ⚠️:
+CLONE YOUR VM WHEN YOU FINISH ALL THE WORK. It's really important that when you take the signature with `shasum` you **DO NOT** boot your machine again. If you want to, clone the VM and use the **CLONED ONE**. If you boot your original VM, even if you ONLY boot it, the signature will change, and you will get a 0 on your defense, as the signature's won't match. Clone them to show your evaluators the machine, but don't touch the original! (The only thing you should do with the original VM is `shasum` to compare to the signature.txt).
+
+![image](https://github.com/ChristianFidalgoAreste/Born2beroot/assets/113194238/13f401a1-113c-4825-bdfd-c0fc3c48ee70)
+
+**How a VM works?:** The PC runs a process like any other application. But in this case, it's `virtualized`. This means that it acts as a "container" (NOT like Docker) that is virtualized, so you can install another operating system with its own disk (virtualized too), etc. Is like having another PC inside your PC. It consumes your CPU resources so it's slower than Docker.
+
+![image](https://github.com/ChristianFidalgoAreste/Born2beroot/assets/113194238/5c0e6068-4f81-45ad-825e-b9de10fe3051)
+
+**Differences between apt and aptitude:** Apt and aptitude are both a package manager for Debian and Linux. Apt is low-level interface and aptitude is high-level, and apt is older than aptitude. 
+
+![image](https://github.com/ChristianFidalgoAreste/Born2beroot/assets/113194238/a5e17cca-1354-445f-85dc-96fe4c12cf12)
+![image](https://github.com/ChristianFidalgoAreste/Born2beroot/assets/113194238/cd2d5955-c42d-425d-bf9f-3903ee739d4d)
+![image](https://github.com/ChristianFidalgoAreste/Born2beroot/assets/113194238/693cad2a-9d2e-4190-97f9-3a1dd5eb3c9f)
+
