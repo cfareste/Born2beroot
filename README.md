@@ -196,7 +196,7 @@ PermitRootLogin no
 
 4. Restart SSH service to apply changes:
 ~~~
-sercice ssh restart
+service ssh restart
 ~~~
 
 ![image](https://github.com/ChristianFidalgoAreste/Born2beroot/assets/113194238/f16961c9-425f-47c1-bede-cd3802c8839a)
