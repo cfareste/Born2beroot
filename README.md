@@ -394,7 +394,7 @@ cd /var/www
 
 5. Before installing wordpress, we need to move the lighttpd default folder for html (placeholder page) to another location:
 ~~~
-mv ./html ./root/html_old_lighttpd
+mv ./html /root/html_old_lighttpd
 ~~~
 The path can be changed, it can be inside the same folder `/var/www`.
 
