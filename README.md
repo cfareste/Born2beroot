@@ -521,7 +521,7 @@ Now, enter on `localhost:8088` for the LiteSpeed page and `localhost:7080` for L
 ## 9. Prepare your defense
 ![image](https://github.com/ChristianFidalgoAreste/Born2beroot/assets/113194238/d6a548d8-c484-43ff-a441-37a472120ae4)
 
-To get the signature, go to the directory where you have your VM saved (probably /sgoinfre/Perso/your-login) and use `shasum Virtual Disk.vmware` (the extension and name of the disk may variate if you use VMWare or Virtual box. Just be sure is the simpliest name, as Virtual Disk, and not Virtual Disk-002.vmware. The extension can be .vmware or .vdi). 
+To get the signature, go to the directory where you have your VM saved (probably /sgoinfre/Perso/your-login) and use `shasum Virtual Disk.vmdk` (the extension and name of the disk may variate if you use VMWare or Virtual box. Just be sure is the simpliest name, as Virtual Disk, and not Virtual Disk-002.vmware. The extension can be .vmware or .vdi). 
 
 #### ⚠️ IMPORTANT ⚠️:
 CLONE YOUR VM WHEN YOU FINISH ALL THE WORK. It's really important that when you take the signature with `shasum` you **DO NOT** boot your machine again. If you want to, clone the VM and use the **CLONED ONE**. If you boot your original VM, even if you ONLY boot it, the signature will change, and you will get a 0 on your defense, as the signature's won't match. Clone them to show your evaluators the machine, but don't touch the original! (The only thing you should do with the original VM is `shasum` to compare to the signature.txt).
